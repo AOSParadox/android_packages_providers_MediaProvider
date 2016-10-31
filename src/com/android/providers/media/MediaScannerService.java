@@ -42,11 +42,8 @@ import android.os.storage.StorageVolume;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.android.internal.os.RegionalizationEnvironment;
-
 import java.io.File;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 public class MediaScannerService extends Service implements Runnable
@@ -263,24 +260,6 @@ public class MediaScannerService extends Service implements Runnable
                                 Environment.getRootDirectory() + "/media",
                                 Environment.getOemDirectory() + "/media",
                         };
-
-                        if (RegionalizationEnvironment.isSupported()) {
-                            final List<File> regionalizationDirs = RegionalizationEnvironment
-                                    .getAllPackageDirectories();
-                            if (regionalizationDirs.size() > 0) {
-                                String[] mediaDirs =
-                                        new String[directories.length + regionalizationDirs.size()];
-                                for (int i = 0; i < directories.length; i++) {
-                                    mediaDirs[i] = directories[i];
-                                }
-                                int j = directories.length;
-                                for (File f : regionalizationDirs) {
-                                    mediaDirs[j] = f.getAbsolutePath() + "/system/media";
-                                    j++;
-                                }
-                                directories = mediaDirs;
-                            }
-                        }
                     }
                     else if (MediaProvider.EXTERNAL_VOLUME.equals(volume)) {
                         // scan external storage volumes
